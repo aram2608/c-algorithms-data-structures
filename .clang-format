@@ -1,0 +1,14 @@
+BasedOnStyle: Google
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+ColumnLimit: 80
+BreakBeforeBraces: Attach
+DerivePointerBinding: false
+PointerAlignment: Left
+SortIncludes: true
+IncludeBlocks: Preserve
+ReflowComments: true
+SpacesBeforeTrailingComments: 1
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: true
