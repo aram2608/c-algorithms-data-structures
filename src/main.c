@@ -1,19 +1,20 @@
 #include "linked_list.h"
 
-int main(void) {
+#define ARRAY_LEN(arr) sizeof(arr)/sizeof(arr[0])
+
+void linked_list_test(void) {
   List* list = NewList();
-  AddNodeStart(list, 4);
-  AddNodeStart(list, 3);
-  AddNodeStart(list, 2);
-  AddNodeStart(list, 12);
-  // AddNodeEnd(list, 10);
-  // AddNodeEnd(list, 15);
-  AddNodeStart(list, 12);
-  AddNodeStart(list, 50);
-  // AddNodeEnd(list, 40);
+  const int arr[] = {4, 3, 2, 12};
+  for(size_t i = 0; i < ARRAY_LEN(arr); i++) {
+    AddNodeStart(list, arr[i]);
+  }
+  const int arr2[] = {10, 15, 12, 15};
+  for(size_t i = 0; i < ARRAY_LEN(arr); i++) {
+    AddNodeEnd(list, arr2[i]);
+  }
   PrettyPrintList(list);
-  printf("%s\n", SearchList(list, 50) ? "true" : "false");
-  printf("%s\n", SearchList(list, 100) ? "true" : "false");
+  printf("%s\n", IsListData(list, 50) ? "true" : "false");
+  printf("%s\n", IsListData(list, 100) ? "true" : "false");
   if (!RemoveNode(list, 4)) printf("Index out of bounds\n");
   PrettyPrintList(list);
   if (!RemoveNode(list, 20)) printf("Index too large\n");
@@ -22,5 +23,14 @@ int main(void) {
   PrettyPrintList(list);
   if (!RemoveNode(list, 0)) printf("Index too large\n");
   PrettyPrintList(list);
+
+  Package temp = SearchList(list, 2);
+  if(temp.ok) {
+    printf("%d\n", temp.data);
+  }
+}
+
+int main(void) {
+  linked_list_test();
   return 0;
 }

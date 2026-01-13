@@ -32,7 +32,7 @@ void PrettyPrintList(List* list) {
   printf("------------\n");
 }
 
-bool SearchList(List* list, int key) {
+bool IsListData(List* list, int key) {
   Node* temp = list->head;
   while (temp != NULL) {
     if (temp->data == key) {
@@ -41,6 +41,50 @@ bool SearchList(List* list, int key) {
     temp = temp->next;
   }
   return false;
+}
+
+Package SearchList(List* list, size_t idx) {
+  Package p;
+  if (list->size < idx || idx < 0) {
+    p.ok = false;
+    return p;
+  }
+
+  Node* temp = list->head;
+  for (size_t it = 0; it < idx; ++it) {
+    temp = temp->next;
+  }
+
+  p.ok = true;
+  p.data = temp->data;
+  return p;
+}
+
+Node* SearchListNode(List* list, size_t idx) {
+  if (list->size < idx || idx < 0) {
+    return NULL;
+  }
+
+  Node* temp = list->head;
+  for (size_t it = 0; it < idx; ++it) {
+    temp = temp->next;
+  }
+
+  return temp;
+}
+
+bool SetData(List* list, size_t idx, int data) {
+  if (list->size < idx || idx < 0) {
+    return false;
+  }
+
+  Node* temp = list->head;
+  for (size_t it = 0; it < idx; ++it) {
+    temp = temp->next;
+  }
+
+  temp->data = data;
+  return true;
 }
 
 void AddNodeStart(List* list, int data) {

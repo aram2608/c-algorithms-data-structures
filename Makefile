@@ -1,7 +1,8 @@
 SRC_DIR := ./src
-CFLAGS := -Wall -Wextra -pedantic -ggdb
+SRC_FILES := $(wildcard $(SRC_DIR)/*.c)
+CFLAGS := -Wall -Wextra -pedantic -g
 BUILD_DIR := ./build
 
 $(BUILD_DIR)/linked_list:
 	@mkdir -p $(@D)
-	clang $(CFLAGS) -o $@ $(SRC_DIR)/linked_list.c
+	clang $(CFLAGS) -o $@ $(SRC_FILES)
