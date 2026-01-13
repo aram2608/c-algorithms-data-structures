@@ -1,33 +1,13 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "linked_list.h"
 
-typedef struct Node Node;
-
-struct Node {
-  int data;
-  Node* next;
-};
-
-typedef struct {
-  size_t size;
-  Node* head;
-} List;
-
-List* NewList(int data) {
+List* NewList(void) {
   List* list = (List*) malloc(sizeof(List));
   if (list == NULL) {
     printf("PANIC: Failed to create list\n");
     exit(1);
   }
-  Node* head = (Node*) malloc(sizeof(Node));
-  if (head == NULL) {
-    printf("PANIC: Failed to create list\n");
-    exit(1);
-  }
-  head->next = NULL;
-  head->data = data;
-  list->head = head;
+
+  list->head = NULL;
   list->size = 0;
   return list;
 }
@@ -41,12 +21,15 @@ void DestroyList(List* list) {
   free(list);
 }
 
-void PrintList(List* list) {
+void PrettyPrintList(List* list) {
+  printf("------------\n");
+  printf("Linked list data\n");
   Node* p = list->head;
-  while (p != NULL) {
-    printf("%d\n", p->data);
+  for (size_t it = 0; it < list->size; ++it) {
+    printf("Data: %d --- Index: %zu\n", p->data, it);
     p = p->next;
   }
+  printf("------------\n");
 }
 
 bool SearchList(List* list, int key) {
@@ -66,10 +49,11 @@ void AddNodeStart(List* list, int data) {
     printf("PANIC: failed to add new node\n");
     exit(1);
   }
+
   node->data = data;
   node->next = NULL;
-
   node->next = list->head;
+
   list->head = node;
   list->size++;
 }
@@ -85,6 +69,7 @@ void AddNodeEnd(List* list, int data) {
     printf("PANIC: failed to add new node\n");
     exit(1);
   }
+
   node->data = data;
   node->next = NULL;
 
@@ -92,17 +77,31 @@ void AddNodeEnd(List* list, int data) {
   list->size++;
 }
 
-int main(void) {
-  List* list = NewList(5);
-  AddNodeStart(list, 4);
-  AddNodeStart(list, 3);
-  AddNodeStart(list, 2);
-  AddNodeStart(list, 12);
-  AddNodeEnd(list, 10);
-  AddNodeEnd(list, 15);
-  AddNodeStart(list, 12);
-  AddNodeStart(list, 50);
-  AddNodeEnd(list, 40);
-  PrintList(list);
-  return 0;
+bool RemoveNode(List* list, size_t idx) {
+  if (list->size <= idx || idx < 0) {
+    return false;
+  }
+
+  Node* prev = list->head;
+  if (idx == 0) {
+    list->head = prev->next;
+    free(prev);
+    --list->size;
+    return true;
+  } else {
+    for (size_t it = 0; it < idx - 1; ++it) {
+      prev = prev->next;
+    }
+  }
+
+  Node* forward = list->head;
+  for (size_t it = 0; it < idx + 1; ++it) {
+    forward = forward->next;
+  }
+
+  free(prev->next);
+  prev->next = forward;
+
+  --list->size;
+  return true;
 }
